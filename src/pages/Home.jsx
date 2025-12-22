@@ -72,6 +72,22 @@ const Home = ({ setIsIslandMoved }) => {
     return [screenScale, screenPosition];
   };
 
+  // Add resize event listener for better responsiveness
+  useEffect(() => {
+    const handleResize = () => {
+      // Re-adjust island and biplane positions on resize
+      const [newIslandScale, newIslandPosition] = adjustIslandForScreenSize();
+      const [newBiplaneScale, newBiplanePosition] = adjustBiplaneForScreenSize();
+      
+      // We could update state here if needed, but for now we'll just log
+      console.log('Window resized - Island scale:', newIslandScale, 'Position:', newIslandPosition);
+      console.log('Window resized - Biplane scale:', newBiplaneScale, 'Position:', newBiplanePosition);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const [biplaneScale, biplanePosition] = adjustBiplaneForScreenSize();
   const [islandScale, islandPosition] = adjustIslandForScreenSize();
 
@@ -82,10 +98,10 @@ const Home = ({ setIsIslandMoved }) => {
         isInputFocused ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}></div>
       
-      <div className='absolute top-16 left-0 right-0 z-10 flex items-center justify-center'>
+      <div className='absolute top-16 left-0 right-0 z-10 flex items-center justify-center px-4'>
         <div className={`transition-all duration-500 ease-in-out ${isInputFocused ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
           {currentStage === 1 && (
-            <h1 className='sm:text-xl sm:leading-snug text-center neo-brutalism-blue py-4 px-8 text-white mx-5'>
+            <h1 className='sm:text-xl text-lg text-center neo-brutalism-blue py-4 px-6 text-white mx-2 sm:mx-5'>
               Hi, I'm
               <span className='font-semibold mx-2 text-white'>Ahib</span>
               👋
@@ -140,17 +156,17 @@ const Home = ({ setIsIslandMoved }) => {
         </Suspense>
       </Canvas>
 
-      <div className='absolute bottom-2 left-2 z-20'>
+      <div className='absolute bottom-2 left-2 sm:left-4 z-20'>
         <img
           src={!isPlayingMusic ? soundoff : soundon}
           alt='jukebox'
           onClick={() => setIsPlayingMusic(!isPlayingMusic)}
-          className='w-10 h-10 cursor-pointer object-contain'
+          className='w-8 h-8 sm:w-10 sm:h-10 cursor-pointer object-contain'
         />
       </div>
 
       {/* Chat Trigger Input Box */}
-      <div className='absolute bottom-4 right-0 left-0 flex justify-center items-center z-40 px-4'>
+      <div className='absolute bottom-4 right-0 left-0 flex justify-center items-center z-40 px-2 sm:px-4'>
         <div className='flex items-center w-full max-w-2xl'>
           <input
             type='text'
@@ -161,15 +177,13 @@ const Home = ({ setIsIslandMoved }) => {
             }}
             onBlur={() => {
               console.log('Home input blurred');
-              // Don't close the chat when the input loses focus
-              // The chat should only close when explicitly closed by the user
             }}
-            className='flex-grow py-3 px-4 rounded-l-lg border-0 focus:ring-0 bg-white/80 backdrop-blur-sm shadow-lg cursor-pointer'
+            className='flex-grow py-3 px-4 rounded-l-lg border-0 focus:ring-0 bg-white/80 backdrop-blur-sm shadow-lg cursor-pointer text-sm sm:text-base'
             style={{ display: isInputFocused ? 'none' : 'block' }}
           />
           <button
             type='button'
-            className='bg-blue-600 hover:bg-blue-700 py-4 px-6 rounded-r-lg focus:outline-none focus:ring-0 shadow-lg'
+            className='bg-blue-600 hover:bg-blue-700 py-3 px-4 sm:py-4 sm:px-6 rounded-r-lg focus:outline-none focus:ring-0 shadow-lg'
             aria-label="Open chat"
             onClick={() => setIsInputFocused(true)}
             role="button"

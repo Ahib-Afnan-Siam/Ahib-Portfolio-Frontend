@@ -103,14 +103,14 @@ const ChatInterface = ({ isVisible, onClose }) => {
     onClose();
   }, [onClose]);
 
-  // Card data for quick actions
+  // Card data for quick actions - adjusted for mobile
   const cards = useMemo(() => [
-    { id: 1, title: "Me😄" },
-    { id: 2, title: "Experience💼" },
-    { id: 3, title: "Skills🛠️" },
-    { id: 4, title: "Projects📒" },
-    { id: 5, title: "Contact✉️" },
-    { id: 6, title: "Research Work And Blogs📚" }
+    { id: 1, title: "Me" },
+    { id: 2, title: "Experience" },
+    { id: 3, title: "Skills" },
+    { id: 4, title: "Projects" },
+    { id: 5, title: "Contact" },
+    { id: 6, title: "Research" }
   ], []);
 
   // Map image names to actual image components for experiences
@@ -290,25 +290,21 @@ const ChatInterface = ({ isVisible, onClose }) => {
       case 'Enter':
       case ' ':
         event.preventDefault();
-        const messageToSend = card.title === "Me😄" ? "Who is Ahib?" : 
-                 card.title === "Experience💼" ? "Tell me about your work experience" :
-                 card.title === "Skills🛠️" ? "What are your technical skills?" :
-                 card.title === "Projects📒" ? "Show me your projects" :
-                 card.title === "Contact✉️" ? "How can I contact you?" :
+        const messageToSend = card.title === "Me" ? "Who is Ahib?" : 
+                 card.title === "Experience" ? "Tell me about your work experience" :
+                 card.title === "Skills" ? "What are your technical skills?" :
+                 card.title === "Projects" ? "Show me your projects" :
+                 card.title === "Contact" ? "How can I contact you?" :
                  "Tell me about your research work and blogs";
         setMessage(messageToSend);
         const fakeEvent = { preventDefault: () => {} };
         handleSubmit(fakeEvent, messageToSend);
-        // Focus management is now handled by the focus trap hook
-        // The focus trap will automatically manage focus within the chat interface
         break;
       case 'ArrowRight':
         event.preventDefault();
         {
           const nextIndex = (index + 1) % cards.length;
           setFocusedCardIndex(nextIndex);
-          // Focus management is now handled by the focus trap hook
-          // The focus trap will automatically manage focus within the chat interface
         }
         break;
       case 'ArrowLeft':
@@ -316,15 +312,11 @@ const ChatInterface = ({ isVisible, onClose }) => {
         {
           const prevIndex = (index - 1 + cards.length) % cards.length;
           setFocusedCardIndex(prevIndex);
-          // Focus management is now handled by the focus trap hook
-          // The focus trap will automatically manage focus within the chat interface
         }
         break;
       case 'Escape':
         event.preventDefault();
         setFocusedCardIndex(-1);
-        // Focus management is now handled by the focus trap hook
-        // The focus trap will automatically manage focus within the chat interface
         break;
       case 'Tab':
         // Allow default tab behavior for focus navigation
@@ -1201,13 +1193,13 @@ const ChatInterface = ({ isVisible, onClose }) => {
 
       {/* Options row - appears right above input box */}
       <div 
-        className="absolute bottom-24 left-0 right-0 flex justify-center items-center z-40 px-4" 
-        style={{ height: '70px', overflow: 'visible', backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: '8px', padding: '5px 0' }}
+        className="absolute bottom-24 left-0 right-0 flex justify-center items-center z-40 px-2 sm:px-4" 
+        style={{ height: 'auto', minHeight: '60px', overflow: 'visible', backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: '8px', padding: '5px 0' }}
         role="region"
         aria-label="Quick action options"
       >
         <div 
-          className="flex justify-center items-center gap-3 w-full max-w-4xl overflow-x-auto chat-options-container"
+          className="flex justify-center items-center gap-2 w-full max-w-4xl overflow-x-auto chat-options-container py-2"
           style={{
             opacity: showOptions ? 1 : 0,
             transform: showOptions ? 'translateY(0)' : 'translateY(20px)',
@@ -1216,7 +1208,7 @@ const ChatInterface = ({ isVisible, onClose }) => {
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
             willChange: 'opacity, transform',
-            height: '100%'
+            height: 'auto'
           }}
           role="group"
           aria-label="Chat options"
@@ -1224,38 +1216,40 @@ const ChatInterface = ({ isVisible, onClose }) => {
           {cards.map((card, index) => (
             <button
               key={card.id}
-              className={`bg-blue-500 hover:bg-blue-600 text-white font-medium py-2.5 px-4 rounded-lg shadow-md ${focusedCardIndex === index ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
+              className={`bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-3 rounded-lg shadow-md text-sm sm:text-base whitespace-nowrap ${focusedCardIndex === index ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
               style={{
                 opacity: showOptions ? 1 : 0,
                 transform: showOptions ? 'translateY(0)' : 'translateY(20px)',
                 willChange: 'opacity, transform',
                 backfaceVisibility: 'hidden',
                 // Maintain visibility for screen readers even when visually hidden
-                visibility: showOptions ? 'visible' : 'hidden'
+                visibility: showOptions ? 'visible' : 'hidden',
+                // Minimum touch target size for mobile
+                minHeight: '44px',
+                minWidth: '44px',
+                // Responsive padding adjustment for small screens
+                padding: '8px 12px'
               }}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                const messageToSend = card.title === "Me😄" ? "Who is Ahib?" : 
-                         card.title === "Experience💼" ? "Tell me about your work experience" :
-                         card.title === "Skills🛠️" ? "What are your technical skills?" :
-                         card.title === "Projects📒" ? "Show me your projects" :
-                         card.title === "Contact✉️" ? "How can I contact you?" :
+                const messageToSend = card.title === "Me" ? "Who is Ahib?" : 
+                         card.title === "Experience" ? "Tell me about your work experience" :
+                         card.title === "Skills" ? "What are your technical skills?" :
+                         card.title === "Projects" ? "Show me your projects" :
+                         card.title === "Contact" ? "How can I contact you?" :
                          "Tell me about your research work and blogs";
                 setMessageWithLogging(messageToSend);
                 const fakeEvent = { preventDefault: () => {}, stopPropagation: () => {} };
                 handleSubmit(fakeEvent, messageToSend);
-                // Focus management is now handled by the focus trap hook
-                // The focus trap will automatically manage focus within the chat interface
               }}
               onKeyDown={(event) => handleCardKeyDown(event, card, index)}
               onFocus={() => {
                 // Set focused card index immediately
                 setFocusedCardIndex(index);
               }}
-              // Removed onBlur handler to prevent infinite loop
               aria-label={`Select option: ${card.title}`}
-              tabIndex={showOptions ? 0 : -1} // Make buttons tabbable only when visible
+              tabIndex={showOptions ? 0 : -1}
               data-chat-card-button="true"
               role="button"
               aria-pressed={focusedCardIndex === index}
@@ -1268,7 +1262,7 @@ const ChatInterface = ({ isVisible, onClose }) => {
 
       {/* Chat Input Box */}
       <div 
-        className='absolute bottom-12 right-0 left-0 flex justify-center items-center z-40 px-4' 
+        className='absolute bottom-12 right-0 left-0 flex justify-center items-center z-40 px-2 sm:px-4' 
         style={{ opacity: 1 }}
         role="region"
         aria-label="Message input area"
@@ -1284,8 +1278,6 @@ const ChatInterface = ({ isVisible, onClose }) => {
             }}
             onBlur={() => {
               console.log('Chat input blurred');
-              // Don't close the chat when the input loses focus
-              // The chat should only close when explicitly closed by the user
             }}
             onKeyDown={(e) => {
               console.log('Key down event:', e.key);
@@ -1295,7 +1287,7 @@ const ChatInterface = ({ isVisible, onClose }) => {
               }
             }}
             placeholder='Ask me anything...'
-            className='flex-grow py-3 px-4 rounded-l-lg border-0 focus:ring-2 focus:ring-blue-500 bg-white/90 shadow-lg'
+            className='flex-grow py-3 px-3 sm:px-4 rounded-l-lg border-0 focus:ring-2 focus:ring-blue-500 bg-white/90 shadow-lg text-sm sm:text-base'
             aria-label="Type your message here"
             aria-describedby="input-description"
             role="textbox"
@@ -1304,7 +1296,7 @@ const ChatInterface = ({ isVisible, onClose }) => {
           <div id="input-description" className="sr-only">Press Enter to send your message</div>
           <button
             type='button'
-            className='bg-blue-600 hover:bg-blue-700 py-4 px-6 rounded-r-lg focus:outline-none focus:ring-0 shadow-lg'
+            className='bg-blue-600 hover:bg-blue-700 py-3 px-4 sm:py-4 sm:px-6 rounded-r-lg focus:outline-none focus:ring-0 shadow-lg'
             disabled={isAiThinking}
             aria-label="Send message"
             onClick={(e) => handleSubmit(e)}
