@@ -1,13 +1,17 @@
 // Utility function to get the base URL for API calls
 export const getApiBaseUrl = () => {
-  // In production, use relative paths which will be handled by the proxy
+  // Check if we have a specific API URL environment variable
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  
   // In development, use localhost
   if (import.meta.env.MODE === 'development') {
     return 'http://localhost:5000';
   }
-  // For production, return empty string to use relative paths
-  // This works with Vercel's proxy configuration for /api routes
-  return '';
+  
+  // In production, use the Render backend URL
+  return 'https://ahib-portfolio-backend.onrender.com';
 };
 
 // Utility function to make API calls

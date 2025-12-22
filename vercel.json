@@ -2,17 +2,7 @@
   "github": {
     "silent": true
   },
-  "builds": [
-    {
-      "src": "dist/**/*",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    { "handle": "filesystem" },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://ahib-portfolio-backend.onrender.com/api/$1" }
   ]
 }
