@@ -298,11 +298,7 @@ const About = () => {
 
       <div className='mt-5 flex flex-col gap-3 text-slate-500'>
         <p>
-          A software engineer currently completing an undergraduate degree in
-          Computer Science and Engineering at BRAC University, specializing in
-          Web Development (Front-End and Back-End), App Development, Game
-          Development, and AI/Machine Learning through hands-on learning and
-          application building.
+          A Software Engineer with a strong background in AI engineering, full-stack development, and enterprise systems, backed by real-world deployment experience. Experienced in building LLM-based assistants, RAG pipelines, and computer vision solutions that enhance operational efficiency and data-driven decision-making at scale.
         </p>
       </div>
 
